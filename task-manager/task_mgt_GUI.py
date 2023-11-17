@@ -23,10 +23,10 @@ def main():
     listbox.pack()
 
     # Buttons for adding and deleting tasks
-    add_button = tk.Button(root, text="Add Task", command=add_task)
+    add_button = tk.Button(root, text="Add Task", command=lambda: add_task(entry, listbox))
     add_button.pack(pady=5)
 
-    delete_button = tk.Button(root, text="Delete Task", command=delete_task)
+    delete_button = tk.Button(root, text="Delete Task", command=lambda: delete_task(listbox))
     delete_button.pack(pady=5)
 
     root.mainloop()
