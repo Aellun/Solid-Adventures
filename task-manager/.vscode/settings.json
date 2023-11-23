@@ -1,0 +1,4 @@
+{
+    "python.formatting.provider": "yapf",
+    "workbench.panel.defaultLocation": "right"
+}
