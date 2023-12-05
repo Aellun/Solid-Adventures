@@ -7,6 +7,8 @@ def main():
     root.title("TASK MANAGEMENT APPLICATION")
     root.resizable(0,0)
     root.geometry("800x600+750+250")
+    root.bind('<Return>', lambda event=None: add_task())
+    
 
     header_frame = tk.Frame(root, bg="#FAEBD7")
     functions_frame = tk.Frame(root, bg="#FAEBD7")
@@ -42,6 +44,8 @@ def main():
         foreground="#A52A2A"
     )
     task_entry.place(x=30, y=80)
+    # Set focus on the task entry widget
+    task_entry.focus_set()
 
     tasks = []
 
@@ -50,7 +54,7 @@ def main():
     the_cursor = the_connection.cursor()
     the_cursor.execute('create table if not exists tasks (title text)')
 
-    def add_task():
+    def add_task(event=None):
         task_string = task_entry.get()
         if len(task_string) == 0:
             messagebox.showinfo('Error', 'Field Empty.')
@@ -151,3 +155,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
