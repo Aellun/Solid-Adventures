@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk, messagebox, simpledialog
 from tkcalendar import DateEntry
 import sqlite3 as sql
 
@@ -7,47 +7,65 @@ def main():
     root = tk.Tk()
     root.title("TASK MANAGEMENT APPLICATION")
     root.resizable(True, True)
-    root.geometry("1000x600+750+250")
+    root.geometry("1000x700+750+250")
     root.bind('<Return>', lambda event=None: add_task())
 
-    header_frame = tk.Frame(root, bg="#FAEBD7")
-    functions_frame = tk.Frame(root, bg="#FAEBD7")
-    functions_frame.pack(side='left', expand=True, fill='both')
-    header_frame.pack(side='top', fill='both')
+    frame_container = tk.Frame(root, bg="#FAEBD7")
+    frame_container.pack(side='left', expand=True, fill='both')
 
-    listbox_frame = tk.Frame(root, bg="#FAEBD7")
-    listbox_frame.pack(side='right', expand=True, fill='both')
+    header_frame = tk.Frame(frame_container, bg="#FAEBD7")
+    functions_frame = tk.Frame(frame_container, bg="#FAEBD7")
+    #listbox_frame = tk.Frame(functions_frame, bg="#FAEBD7")
+
+    header_frame.pack(side='top', fill='both', pady=10)
+    functions_frame.pack(side='bottom', expand=True, fill='both')
+
+    frame_container.grid_columnconfigure(0, weight=1)  # Make column 0 resizable
+    frame_container.grid_rowconfigure(0, weight=1)  # Make row 0 resizable
+    functions_frame.grid_columnconfigure(0, weight=1)  # Make column 0 resizable
+    functions_frame.grid_columnconfigure(1, weight=1)  # Make column 1 resizable
+    functions_frame.grid_rowconfigure(0, weight=1)  # Make row 0 resizable
+    functions_frame.grid_rowconfigure(1, weight=1)  # Make row 1 resizable
+    functions_frame.grid_rowconfigure(2, weight=1)  # Make row 2 resizable
 
     header_label = tk.Label(
         header_frame,
         text="My Tasks",
-        font=("Helvetica", "25"),
+        font=("Helvetica", "18"),
         background="#FAEBD7",
         foreground="#B9D9EB"
     )
-    header_label.pack(padx=10, pady=10)
+    header_label.grid(row=0, column=0, columnspan=2, padx=10, pady=10, sticky='nsew')
+
+    frame_task = tk.Frame(
+        functions_frame,
+        borderwidth=2,
+        relief="groove",
+        background="#FAEBD7"
+    )
+    frame_task.grid(row=1, column=0, padx=40, pady=40, sticky='w', columnspan=2)
 
     task_label = tk.Label(
-        functions_frame,
+        frame_task,
         text="Enter Task:",
         font=("Consolas", "11", "bold"),
         background="#FAEBD7",
-        foreground="#000000",    
+        foreground="#000000",
     )
     task_label.grid(row=0, column=0, padx=10, pady=10, sticky='w')
 
     task_entry = tk.Entry(
-        functions_frame,
+        frame_task,
         font=("Consolas", "12"),
-        width=24,
+        width=16,
         background="#FFF8DC",
         foreground="#A52A2A"
     )
     task_entry.focus_set()
-    task_entry.grid(row=0, column=1, padx=5, pady=5, sticky='e')
+    task_entry.grid(row=0, column=1, padx=5, pady=5, sticky='w')
 
     date_label = tk.Label(
-        functions_frame,
+        frame_task,
         text="Select Date:",
         font=("Consolas", "11", "bold"),
         background="#FAEBD7",
@@ -56,7 +74,7 @@ def main():
     date_label.grid(row=1, column=0, padx=10, pady=10, sticky='w')
 
     date_entry = DateEntry(
-        functions_frame,
+        frame_task,
         font=("Consolas", "12"),
         width=16,
         background="#FFF8DC",
@@ -65,7 +83,7 @@ def main():
     date_entry.grid(row=1, column=1, padx=10, pady=10, sticky='w')
 
     time_label = tk.Label(
-        functions_frame,
+        frame_task,
         text="Select Time:",
         font=("Consolas", "11", "bold"),
         background="#FAEBD7",
@@ -79,8 +97,9 @@ def main():
                    '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM', '3:30 PM',
                    '4:00 PM', '4:30 PM', '5:00 PM', '5:30 PM', '6:00 PM', '6:30 PM', '7:00 PM', '7:30 PM',
                    '8:00 PM', '8:30 PM', '9:00 PM', '9:30 PM', '10:00 PM', '10:30 PM', '11:00 PM', '11:30 PM']
+
     time_combobox = ttk.Combobox(
-        functions_frame,
+        frame_task,
         values=time_values,
         font=("Consolas", "12"),
         width=16,
@@ -91,8 +110,7 @@ def main():
 
     the_connection = sql.connect('listOfTasks.db')
     the_cursor = the_connection.cursor()
-    the_cursor.execute('DROP TABLE IF EXISTS my_to_do')
-    the_cursor.execute('CREATE TABLE my_to_do (todo TEXT, todate TEXT, totime TEXT)')
+    the_cursor.execute('create table if not exists my_to_do (todo text, todate text, totime text)')
 
     def add_task(event=None):
         task_string = task_entry.get()
@@ -102,25 +120,139 @@ def main():
             messagebox.showinfo('Error', 'Field Empty.')
         else:
             tasks.append((task_string, selected_date, selected_time))
-            the_cursor.execute('INSERT INTO my_to_do VALUES (?, ?, ?)', (task_string, selected_date, selected_time))
+            the_cursor.execute('insert into my_to_do values(?, ?, ?)', (task_string, selected_date, selected_time))
             the_connection.commit()
             list_update()
             task_entry.delete(0, 'end')
 
-    def list_update():
-        clear_list()
-        for task in tasks:
-            task_listbox.insert('end', task)
+    def view_tasks():
+        view_window = tk.Toplevel(root)
+        view_window.title("View Tasks")
+
+        view_listbox = tk.Listbox(
+            view_window,
+            width=45,
+            height=13,
+            background="#FFFFFF",
+            foreground="#000000",
+            selectbackground="#CD853F",
+            selectforeground="#FFFFFF"
+        )
+        view_listbox.pack(padx=10, pady=10)
+
+        view_listbox.insert('end', 'Task          Date             Time')
+        view_listbox.insert('end', '-' * 45)
+        for index, task in enumerate(tasks, start=1):
+            view_listbox.insert('end', f"{index}. {task[0]:<14}{task[1]:<17}{task[2]}")
+
+        modify_button = tk.Button(
+            view_window,
+            text="Modify Task",
+            width=24,
+            command=lambda: modify_task(tasks, view_listbox, the_cursor, the_connection)
+        )
+        modify_button.pack(pady=10)
+
+    def modify_task(tasks, view_listbox, the_cursor, the_connection):
+        try:
+            selected_index = int(view_listbox.curselection()[0])
+            selected_task = tasks[selected_index - 1]
+
+            modify_window = tk.Toplevel(root)
+            modify_window.title("Modify Task")
+
+            tk.Label(
+                modify_window,
+                text="Task:",
+                font=("Consolas", "11", "bold"),
+                background="#FAEBD7",
+                foreground="#000000",
+            ).grid(row=0, column=0, padx=10, pady=10, sticky='w')
+
+            modified_task_entry = tk.Entry(
+                modify_window,
+                font=("Consolas", "12"),
+                width=24,
+                background="#FFF8DC",
+                foreground="#A52A2A"
+            )
+            modified_task_entry.insert(0, selected_task[0])
+            modified_task_entry.grid(row=0, column=1, padx=5, pady=5, sticky='E')
+
+            tk.Label(
+                modify_window,
+                text="Select Date:",
+                font=("Consolas", "11", "bold"),
+                background="#FAEBD7",
+                foreground="#000000"
+            ).grid(row=1, column=0, padx=10, pady=10, sticky='w')
+
+            modified_date_entry = DateEntry(
+                modify_window,
+                font=("Consolas", "12"),
+                width=16,
+                background="#FFF8DC",
+                foreground="#A52A2A"
+            )
+            modified_date_entry.set_date(selected_task[1])
+            modified_date_entry.grid(row=1, column=1, padx=10, pady=10, sticky='w')
+
+            tk.Label(
+                modify_window,
+                text="Select Time:",
+                font=("Consolas", "11", "bold"),
+                background="#FAEBD7",
+                foreground="#000000"
+            ).grid(row=2, column=0, padx=10, pady=10, sticky='w')
+
+            modified_time_combobox = ttk.Combobox(
+                modify_window,
+                values=time_values,
+                font=("Consolas", "12"),
+                width=16,
+            )
+            modified_time_combobox.set(selected_task[2])
+            modified_time_combobox.grid(row=2, column=1, padx=10, pady=10, sticky='w')
+
+            update_button = tk.Button(
+                modify_window,
+                text="Update Task",
+                width=24,
+                command=lambda: update_task(selected_index, modified_task_entry.get(),
+                                            modified_date_entry.get(), modified_time_combobox.get(),
+                                            view_listbox, modify_window)
+            )
+            update_button.grid(row=3, columnspan=2, pady=10)
+
+        except (IndexError, ValueError):
+            messagebox.showwarning("Warning", "Please select a task to modify.")
+
+    def update_task(selected_index, modified_task, modified_date, modified_time, view_listbox, modify_window):
+        tasks[selected_index - 1] = (modified_task, modified_date, modified_time)
+        the_cursor.execute('update my_to_do set todo=?, todate=?, totime=? where rowid=?',
+                           (modified_task, modified_date, modified_time, selected_index))
+        the_connection.commit()
+        list_update(view_listbox)
+        modify_window.destroy()
+
+    def list_update(view_listbox=None):
+        clear_list(view_listbox)
+        for index, task in enumerate(tasks, start=1):
+            if view_listbox:
+                view_listbox.insert('end', f"{index}. {task[0]:<14}{task[1]:<17}{task[2]}")
+            else:
+                task_listbox.insert('end', task)
 
     def delete_task():
         try:
-            the_value = task_listbox.get(task_listbox.curselection())
-            if the_value in tasks:
-                tasks.remove(the_value)
-                list_update()
-                the_cursor.execute('DELETE FROM my_to_do WHERE todo = ?', (the_value,))
-                the_connection.commit()
-        except IndexError:
+            selected_index = int(task_listbox.curselection()[0])
+            selected_task = tasks[selected_index - 1]
+
+            tasks.remove(selected_task)
+            list_update()
+            the_cursor.execute('delete from my_to_do where rowid=?', (selected_index,))
+            the_connection.commit()
+        except (IndexError, ValueError):
             messagebox.showwarning("Warning", "Please select a task to delete.")
 
     def delete_all_tasks():
@@ -128,13 +260,22 @@ def main():
         if message_box == True:
             while (len(tasks) != 0):
                 tasks.pop()
-            the_cursor.execute('DELETE FROM my_to_do')
+            the_cursor.execute('delete from my_to_do')
             the_connection.commit()
             list_update()
 
-    def clear_list():
-        task_listbox.delete(0, 'end')
+    def clear_list(view_listbox=None):
+        if view_listbox:
+            view_listbox.delete(0, 'end')
+        else:
+            task_listbox.delete(0, 'end')
 
+    def clear_screen(view_listbox=None):
+        if view_listbox:
+            view_listbox.delete(0, 'end')
+        else:
+            task_listbox.delete(0, 'end')
+            
     def close():
         print(tasks)
         root.destroy()
@@ -142,49 +283,72 @@ def main():
     def retrieve_database():
         while (len(tasks) != 0):
             tasks.pop()
-        for row in the_cursor.execute('SELECT todo FROM my_to_do'):
-            tasks.append(row[0])
+        for row in the_cursor.execute('select todo, todate, totime from my_to_do'):
+            tasks.append(row)
+
+    frame_buttons = tk.Frame(
+        functions_frame,
+        borderwidth=2,
+        relief="groove",
+        background="#FAEBD7"
+    )
+    frame_buttons.grid(row=2, column=0, padx=10, pady=10, sticky='w', columnspan=2)
 
     add_button = tk.Button(
-        functions_frame,
+        frame_buttons,
         text="Add Task",
-        width=24,
+        width=32,
         command=add_task
     )
     del_button = tk.Button(
-        functions_frame,
+        frame_buttons,
         text="Delete Task",
-        width=24,
-        command=delete_task
+        width=32,
+        command=lambda: delete_task()
     )
     del_all_button = tk.Button(
-        functions_frame,
+        frame_buttons,
         text="Delete All Tasks",
-        width=24,
+        width=32,
         command=delete_all_tasks
     )
+    view_button = tk.Button(
+        frame_buttons,
+        text="View Tasks",
+        width=32,
+        command=view_tasks
+    )
     exit_button = tk.Button(
-        functions_frame,
+        frame_buttons,
         text="Exit",
-        width=24,
+        width=32,
         command=close
     )
-    add_button.place(x=120, y=200)
-    del_button.place(x=120, y=250)
-    del_all_button.place(x=120, y=300)
-    exit_button.place(x=120, y=350)
+    clear_screen_button = tk.Button(
+        frame_buttons,
+        text="Clear Screen",
+        width=32,
+        command=lambda: clear_screen()
+    )
+
+    add_button.grid(row=0, column=0, padx=20, pady=20)
+    del_button.grid(row=1, column=0, padx=10, pady=10)
+    del_all_button.grid(row=3, column=0, padx=10, pady=10)
+    view_button.grid(row=4, column=0, padx=10, pady=10)
+    exit_button.grid(row=6, column=0, padx=10, pady=10)
+    clear_screen_button.grid(row=5, column=0, padx=10, pady=10)
 
     task_listbox = tk.Listbox(
-        listbox_frame,
-        width=26,
-        height=13,
+        functions_frame,
+        width=35,
+        height=15,
         selectmode='SINGLE',
-        background="#FFFFFF",
+        background="#B9D9EB",
         foreground="#000000",
         selectbackground="#CD853F",
         selectforeground="#FFFFFF"
     )
-    task_listbox.place(x=10, y=20)
+    task_listbox.grid(row=1, column=1, padx=10, pady=10, sticky='w')
 
     retrieve_database()
     list_update()
