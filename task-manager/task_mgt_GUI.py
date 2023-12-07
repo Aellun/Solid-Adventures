@@ -4,8 +4,9 @@ from tkcalendar import DateEntry
 import sqlite3 as sql
 from tkinter import ttk
 
-
+# Function to define and run the main application
 def main():
+    # Create the main Tkinter window
     root = tk.Tk()
     root.title("TASK MANAGEMENT APPLICATION")
     root.configure(bg="#2E2E2E")  # Set the background color to a dark
@@ -14,6 +15,7 @@ def main():
     root.geometry("1000x700+750+250")
     root.bind('<Return>', lambda event=None: add_task())
 
+    # Create the main frame container
     frame_container = tk.Frame(root, bg="#FAEBD7")
     frame_container.pack(side='left', expand=True, fill='both')
 
@@ -32,6 +34,7 @@ def main():
     functions_frame.grid_rowconfigure(1, weight=1)  # Make row 1 resizable
     functions_frame.grid_rowconfigure(2, weight=1)  # Make row 2 resizable
 
+    # Header Label
     header_label = tk.Label(
         header_frame,
         text="My to do list",
@@ -41,6 +44,7 @@ def main():
     )
     header_label.grid(row=0, column=1, columnspan=2, padx=10, pady=10, sticky='ew')
 
+    # Frame for task-related widgets
     frame_task = tk.Frame(
         functions_frame,
         borderwidth=2,
@@ -49,6 +53,7 @@ def main():
     )
     frame_task.grid(row=1, column=0, rowspan=1, padx=40, pady=40, sticky='w', columnspan=2)
 
+     # Labels and Entry Widgets for Task Entry
     task_label = tk.Label(
         frame_task,
         text="Enter Task:",
@@ -335,6 +340,7 @@ def main():
         for row in the_cursor.execute('select todo, todate, totime from my_to_do'):
             tasks.append(row)
 
+    # enclose all buttons on the function_frame
     frame_buttons = tk.Frame(
         functions_frame,
         borderwidth=2,
@@ -386,6 +392,7 @@ def main():
         command=lambda: clear_screen()
     )
 
+    # placing each button on the function_frame
     add_button.grid(row=0, column=0, padx=20, pady=20)
     del_button.grid(row=0, column=1, padx=10, pady=10)
     del_all_button.grid(row=2, column=0, padx=10, pady=10)
@@ -399,7 +406,7 @@ def main():
     style="TFrame",
 )
     task_listbox_frame.grid(row=1, column=1, padx=10, pady=10, sticky='w')
-
+    # listbox containing the task entered
     task_listbox = tk.Listbox(
     task_listbox_frame,
     width=35,
@@ -418,8 +425,10 @@ def main():
 
     the_connection.commit()
 
+    # Run the Tkinter main loop
     root.mainloop()
     the_cursor.close()
 
+# Entry point for the script
 if __name__ == "__main__":
     main()
