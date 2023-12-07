@@ -2,10 +2,14 @@ import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
 from tkcalendar import DateEntry
 import sqlite3 as sql
+from tkinter import ttk
+
 
 def main():
     root = tk.Tk()
     root.title("TASK MANAGEMENT APPLICATION")
+    root.configure(bg="#2E2E2E")  # Set the background color to a dark
+
     root.resizable(True, True)
     root.geometry("1000x700+750+250")
     root.bind('<Return>', lambda event=None: add_task())
@@ -13,8 +17,8 @@ def main():
     frame_container = tk.Frame(root, bg="#FAEBD7")
     frame_container.pack(side='left', expand=True, fill='both')
 
-    header_frame = tk.Frame(frame_container, bg="#FAEBD7")
-    functions_frame = tk.Frame(frame_container, bg="#FAEBD7")
+    header_frame = tk.Frame(frame_container, bg="#CC7722")
+    functions_frame = tk.Frame(frame_container, bg="#DCD7A0")
     #listbox_frame = tk.Frame(functions_frame, bg="#FAEBD7")
 
     header_frame.pack(side='top', fill='both', pady=10)
@@ -30,12 +34,12 @@ def main():
 
     header_label = tk.Label(
         header_frame,
-        text="My Tasks",
+        text="My to do list",
         font=("Helvetica", "18"),
-        background="#FAEBD7",
+        background="#CC7722",
         foreground="#B9D9EB"
     )
-    header_label.grid(row=0, column=0, columnspan=2, padx=10, pady=10, sticky='nsew')
+    header_label.grid(row=0, column=1, columnspan=2, padx=10, pady=10, sticky='ew')
 
     frame_task = tk.Frame(
         functions_frame,
@@ -43,7 +47,7 @@ def main():
         relief="groove",
         background="#FAEBD7"
     )
-    frame_task.grid(row=1, column=0, padx=40, pady=40, sticky='w', columnspan=2)
+    frame_task.grid(row=1, column=0, rowspan=1, padx=40, pady=40, sticky='w', columnspan=2)
 
     task_label = tk.Label(
         frame_task,
@@ -107,6 +111,7 @@ def main():
     time_combobox.grid(row=2, column=1, padx=10, pady=10, sticky='w')
 
     tasks = []
+    completed_tasks = []
 
     the_connection = sql.connect('listOfTasks.db')
     the_cursor = the_connection.cursor()
@@ -124,6 +129,43 @@ def main():
             the_connection.commit()
             list_update()
             task_entry.delete(0, 'end')
+
+    def mark_as_completed(view_listbox):
+        try:
+            selected_index = int(view_listbox.curselection()[0])
+            selected_task = tasks[selected_index - 1]
+            
+            completed_tasks.append(selected_task)
+            tasks.pop(selected_index - 1)
+
+            the_cursor.execute('delete from my_to_do where rowid=?', (selected_index,))
+            the_connection.commit()
+
+            list_update(view_listbox)
+            list_update()
+        except (IndexError, ValueError):
+            messagebox.showwarning("Warning", "Please select a task to mark as completed.")
+
+    def view_completed_tasks():
+        completed_window = tk.Toplevel(root)
+        completed_window.title("Completed Tasks")
+
+        completed_listbox = tk.Listbox(
+            completed_window,
+            width=45,
+            height=13,
+            background="#FFFFFF",
+            foreground="#000000",
+            selectbackground="#CD853F",
+            selectforeground="#FFFFFF"
+        )
+        completed_listbox.pack(padx=10, pady=10)
+
+        completed_listbox.insert('end', 'Task          Date             Time')
+        completed_listbox.insert('end', '-' * 45)
+        for index, task in enumerate(completed_tasks, start=1):
+            completed_listbox.insert('end', f"{index}. {task[0]:<14}{task[1]:<17}{task[2]}")
+
 
     def view_tasks():
         view_window = tk.Toplevel(root)
@@ -152,6 +194,14 @@ def main():
             command=lambda: modify_task(tasks, view_listbox, the_cursor, the_connection)
         )
         modify_button.pack(pady=10)
+
+        mark_completed_button = tk.Button(
+            view_window,
+            text="Mark as Completed",
+            width=24,
+            command=lambda: mark_as_completed(view_listbox)
+        )
+        mark_completed_button.pack(pady=10)
 
     def modify_task(tasks, view_listbox, the_cursor, the_connection):
         try:
@@ -277,7 +327,6 @@ def main():
             task_listbox.delete(0, 'end')
             
     def close():
-        print(tasks)
         root.destroy()
 
     def retrieve_database():
@@ -318,6 +367,12 @@ def main():
         width=32,
         command=view_tasks
     )
+    completed_button = tk.Button(
+        frame_buttons,
+        text="View Completed Tasks",
+        width=32,
+        command=view_completed_tasks
+    )
     exit_button = tk.Button(
         frame_buttons,
         text="Exit",
@@ -332,23 +387,31 @@ def main():
     )
 
     add_button.grid(row=0, column=0, padx=20, pady=20)
-    del_button.grid(row=1, column=0, padx=10, pady=10)
-    del_all_button.grid(row=3, column=0, padx=10, pady=10)
-    view_button.grid(row=4, column=0, padx=10, pady=10)
-    exit_button.grid(row=6, column=0, padx=10, pady=10)
-    clear_screen_button.grid(row=5, column=0, padx=10, pady=10)
+    del_button.grid(row=0, column=1, padx=10, pady=10)
+    del_all_button.grid(row=2, column=0, padx=10, pady=10)
+    view_button.grid(row=2, column=1, padx=10, pady=10)
+    exit_button.grid(row=3, column=1, padx=10, pady=10)
+    clear_screen_button.grid(row=3, column=0, padx=10, pady=10)
+    completed_button.grid(row=4, column=0, padx=10, pady=10)
+    
+    task_listbox_frame = ttk.Frame(
+    functions_frame,
+    style="TFrame",
+)
+    task_listbox_frame.grid(row=1, column=1, padx=10, pady=10, sticky='w')
 
     task_listbox = tk.Listbox(
-        functions_frame,
-        width=35,
-        height=15,
-        selectmode='SINGLE',
-        background="#B9D9EB",
-        foreground="#000000",
-        selectbackground="#CD853F",
-        selectforeground="#FFFFFF"
-    )
-    task_listbox.grid(row=1, column=1, padx=10, pady=10, sticky='w')
+    task_listbox_frame,
+    width=35,
+    height=15,
+    selectmode='SINGLE',
+    background="#EBF6F7",
+    foreground="#000000",
+    selectbackground="#CD853F",
+    selectforeground="#FFFFFF"
+)
+    task_listbox.pack(padx=5, pady=5)
+
 
     retrieve_database()
     list_update()
