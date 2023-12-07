@@ -8,6 +8,10 @@ Description
     in correspondence with the application the password
     is meant for. the user can then choose to save the 
     password generated
+    Before generating the password the user has an option
+    of adding the password srength scale as they desire.
+    the scale strenght default is 12 character, highest 
+    being 20 characters
 
 ===========================================================
 view passwords
