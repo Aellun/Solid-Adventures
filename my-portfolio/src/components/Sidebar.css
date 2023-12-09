@@ -1,0 +1,42 @@
+/* src/components/Sidebar.css */
+.sidebar {
+    width: 300px;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    height: 60vh;
+    overflow-y: auto;
+    position: fixed;
+    top: 0;
+}
+
+.header-info {
+    margin-bottom: 20px;
+}
+
+.header-info h1,
+.header-info p {
+    margin: 0;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.header-item {
+    cursor: pointer;
+    margin-bottom: 10px;
+    color: #ccc;
+    /* Optionally style differently from other menu items */
+}
+
+/* Remove the underline effect on hover for the header-item */
+.header-item:hover {
+    text-decoration: none;
+}

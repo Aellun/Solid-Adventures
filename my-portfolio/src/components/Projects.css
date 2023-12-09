@@ -1,0 +1,9 @@
+/* src/components/Projects.css */
+.projects {
+    padding: 20px;
+    border-bottom: 1px solid #ccc;
+}
+
+.project {
+    margin-bottom: 15px;
+}

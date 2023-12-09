@@ -1,0 +1,7 @@
+/* src/components/MainContent.css */
+.main-content {
+    margin-left: 320px;
+    flex-grow: 1;
+    padding: 20px;
+    padding-bottom: 50px;
+}
