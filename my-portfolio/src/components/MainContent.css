@@ -19,9 +19,10 @@
 
 .container {
     flex: 1;
-    padding: 20px;
+    padding: 50px;
     overflow-y: auto;
-    max-width: calc(100% - 300px);
+    max-width: 60vw;
+    /*max-width: calc(100% - 100px);*/
     /* Adjust the width calculation */
 }
 

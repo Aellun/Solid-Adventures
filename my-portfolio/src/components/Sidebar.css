@@ -1,11 +1,14 @@
 /* src/components/Sidebar.css */
 .sidebar {
-    width: 300px;
+    width: 200px;
     background-color: transparent;
     color: white;
     padding: 20px;
     height: 60vh;
     overflow-y: auto;
+    max-width: 400px;
+    min-width: 200px;
+
 }
 
 .header-info {

@@ -1,4 +1,7 @@
 /* App.css */
+.app {
+    display: flex;
+}
 
 * {
     margin: 0;
@@ -8,7 +11,7 @@
 }
 
 body {
-    background: url("/bg.jpg") center/cover no-repeat fixed !important;
+    background: url('../public/bg.jpg') center/cover no-repeat fixed !important;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -16,4 +19,6 @@ body {
     overflow: hidden;
     overflow-y: scroll;
     height: 100vh;
+
+
 }
