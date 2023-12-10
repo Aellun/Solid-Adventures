@@ -17,8 +17,9 @@ const Sidebar = ({ setActiveComponent }) => {
         <div className="sidebar">
             {/* Header Information at the Top */}
             <div className="header-info">
-                <h1>Okello Kevin</h1>
-                <p>Full-Stack Software Engineer</p>
+                <h2>OKELLO KEVIN</h2>
+                <p>Software Engineer Student</p>
+                <h5>At Hoberton School/ALX_Africa</h5>
             </div>
 
             {/* Menu Items */}

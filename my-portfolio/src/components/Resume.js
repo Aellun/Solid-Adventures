@@ -6,8 +6,10 @@ const Resume = () => {
         <div className="resume-container">
             <h2>Projects</h2>
             <div>
-                <h3>Project 1</h3>
-                <p>Description of Project 1.</p>
+                <h3>Task manager</h3>
+                <p>Description:
+
+                </p>
             </div>
             <div>
                 <h3>Project 2</h3>
