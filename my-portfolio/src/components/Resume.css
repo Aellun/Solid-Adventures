@@ -1,7 +1,11 @@
 /* src/components/Resume.css */
-.Resume {
-    background-color: #333;
+
+.resume-container {
+    display: grid;
+    grid-gap: 10px;
+    border: 1px solid #91aa9d;
+    border-radius: 10px;
+    grid-template-columns: 1fr 1fr;
+    margin: 10px;
     padding: 10px;
-    color: white;
-    text-align: center;
 }

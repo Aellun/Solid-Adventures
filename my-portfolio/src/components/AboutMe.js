@@ -4,14 +4,16 @@ import './AboutMe.css';
 
 const AboutMe = () => {
     return (
-        <section>
+        <div className="container-content">
             <h2>About Me</h2>
             <p>
-                Welcome to my portfolio! I am a passionate Full-Stack Software Engineering student with a focus on creating
-                engaging and user-friendly applications.
-                I am currently taking a SWE course with Holberton and ALX Africa
+                Experienced Technical Support Technician skilled in IT hardware, networking, and troubleshooting.
+                Proficient in C, Bash, Python, MySQL, and web development.
+                Currently contributing to Digital Imaging and Scanning International's IT support.
+                Studying Full Stack Software Engineering at ALX Africa and Holberton School.
+                Holder of Bachelor's in Technology Business Information Technology from The Technical University of Kenya.
             </p>
-        </section>
+        </div>
     );
 };
 

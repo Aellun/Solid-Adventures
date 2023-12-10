@@ -3,7 +3,7 @@ import React from 'react';
 import './Projects.css';
 const Projects = () => {
     return (
-        <section>
+        <div className="container-content">
             <h2>Projects</h2>
             <div>
                 <h3>Project 1</h3>
@@ -14,7 +14,7 @@ const Projects = () => {
                 <p>Description of Project 2.</p>
             </div>
             {/* Add more projects as needed */}
-        </section>
+        </div>
     );
 };
 

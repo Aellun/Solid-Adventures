@@ -1,9 +1,17 @@
 // src/components/Sidebar.js
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faCode, faFileAlt, faTools, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import './Sidebar.css';
 
 const Sidebar = ({ setActiveComponent }) => {
-    const menuItems = ['AboutMe', 'Projects', 'Resume', 'Skills', 'Contact'];
+    const menuItems = [
+        { key: 'AboutMe', label: 'About Me', icon: faUser },
+        { key: 'Projects', label: 'Projects', icon: faCode },
+        { key: 'Resume', label: 'Resume', icon: faFileAlt },
+        { key: 'Skills', label: 'Skills', icon: faTools },
+        { key: 'Contact', label: 'Contact', icon: faEnvelope },
+    ];
 
     return (
         <div className="sidebar">
@@ -16,8 +24,9 @@ const Sidebar = ({ setActiveComponent }) => {
             {/* Menu Items */}
             <ul>
                 {menuItems.map((item) => (
-                    <li key={item} onClick={() => setActiveComponent(item)}>
-                        {item}
+                    <li key={item.key} onClick={() => setActiveComponent(item.key)}>
+                        <FontAwesomeIcon icon={item.icon} className="icon" />
+                        {item.label}
                     </li>
                 ))}
             </ul>

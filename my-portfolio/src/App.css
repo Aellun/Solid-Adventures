@@ -8,8 +8,12 @@
 }
 
 body {
-    background: rgb(30, 30, 30);
-    color: white;
+    background: url("/bg.jpg") center/cover no-repeat fixed !important;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
     overflow: hidden;
     overflow-y: scroll;
+    height: 100vh;
 }

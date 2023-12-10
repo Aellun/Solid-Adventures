@@ -18,7 +18,11 @@ const MainContent = ({ activeComponent }) => {
         CopyrightFooter: <CopyrightFooter />,
     };
 
-    return <div className="main-content">{components[activeComponent]}</div>;
+    return (
+        <div className="main-content">
+            <div className="container">{components[activeComponent]}</div>
+        </div>
+    );
 };
 
 export default MainContent;

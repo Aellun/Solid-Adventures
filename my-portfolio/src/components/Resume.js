@@ -3,7 +3,7 @@ import React from 'react';
 import './Resume.css';
 const Resume = () => {
     return (
-        <section>
+        <div className="resume-container">
             <h2>Projects</h2>
             <div>
                 <h3>Project 1</h3>
@@ -14,7 +14,7 @@ const Resume = () => {
                 <p>Description of Project 2.</p>
             </div>
             {/* Add more projects as needed */}
-        </section>
+        </div>
     );
 };
 
