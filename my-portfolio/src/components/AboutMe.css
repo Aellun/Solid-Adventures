@@ -3,3 +3,14 @@
     padding: 20px;
     border-bottom: 1px solid #ccc;
 }
+
+/* Style paragraphs */
+* Style headers */ h1 {
+    font-size: 24px;
+
+    /* Adjust the font size as needed */
+    color: #333;
+    /* Set the color of the header text */
+    margin-bottom: 10px;
+    /* Add space below the header */
+}

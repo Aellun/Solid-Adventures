@@ -1,11 +1,43 @@
 /* src/components/Resume.css */
 
-.resume-container {
-    display: grid;
-    grid-gap: 10px;
-    border: 1px solid #91aa9d;
-    border-radius: 10px;
-    grid-template-columns: 1fr 1fr;
-    margin: 10px;
-    padding: 10px;
+
+.resume {
+    padding: 20px;
+    border-bottom: 1px solid #ccc;
+}
+
+.resume {
+    margin-bottom: 15px;
+}
+
+/* Style headers */
+h1 {
+    font-size: 24px;
+    text-align: center;
+    /* Adjust the font size as needed */
+    color: #333;
+    /* Set the color of the header text */
+    margin-bottom: 10px;
+    /* Add space below the header */
+}
+
+h2 {
+    font-size: 20px;
+    color: #f5f0f0;
+    margin-bottom: 8px;
+}
+
+h3 {
+    font-size: 18px;
+    color: #f2ecec;
+    margin-bottom: 6px;
+}
+
+/* Style paragraphs */
+p {
+    font-size: 16px;
+    line-height: 1.5;
+    /* Adjust the line height for better readability */
+    color: #444;
+    margin-bottom: 15px;
 }

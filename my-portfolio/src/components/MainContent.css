@@ -8,10 +8,10 @@
 }
 
 .sidebar {
-    width: 300px;
-    background-color: #333;
+    width: 400px;
+    background-color: #373842;
     /* Adjust background color to match Sidebar */
-    color: white;
+    color: rgb(235, 228, 228);
     padding: 20px;
     height: 100%;
     overflow-y: auto;
@@ -27,10 +27,13 @@
 }
 
 .container-content {
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(229, 238, 246, 0.9);
     border: 2px solid #333;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     padding: 20px;
     margin-bottom: 20px;
+    width: 950px;
+    word-wrap: break-word;
+
 }
