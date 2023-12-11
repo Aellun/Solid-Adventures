@@ -1,48 +1,28 @@
-/* src/components/Sidebar.css */
-.sidebar {
-    width: 300px;
-    /*background-color: #333;*/
-    color: white;
-    padding: 20px;
-    height: 60vh;
-    overflow-y: auto;
-}
+/* src/components/Skills.css */
 
-.header-info {
-    margin-bottom: 20px;
-}
-
-.header-info h1,
-.header-info p {
-    margin: 0;
-}
-
-ul {
+.skills-list {
     list-style-type: none;
     padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    /* Allow the list items to wrap to the next line */
 }
 
-li {
-    cursor: pointer;
-    margin-bottom: 10px;
-    font-size: 18px;
-    /* Set your desired font size */
-    padding: 10px;
-    /* Add padding to create a box around the text */
-    border: 1px solid #ccc;
-    /* Add a faint border */
-    border-radius: 5px;
-    /* Optional: Add border-radius for rounded corners */
+.skills-list li {
+    width: 50%;
+    /* Set the width to 50% for a two-column layout */
+    box-sizing: border-box;
+    /* Include padding and border in the total width */
+    margin-bottom: 15px;
 }
 
-.icon {
-    margin-right: 10px;
-    /* Adjust spacing between icon and text */
+.skill-name {
+    font-weight: bold;
 }
 
-li:hover {
-    background-color: #555;
-    /* Change background color on hover */
-    border-color: #888;
-    /* Change border color on hover */
+.sub-note {
+    margin-top: 5px;
+    margin-left: 20px;
+    color: #666;
+    /* Adjust the color as needed */
 }
