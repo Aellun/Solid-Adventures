@@ -21,23 +21,16 @@ h1 {
     /* Add space below the header */
 }
 
-h2 {
-    font-size: 20px;
-    color: #f5f0f0;
-    margin-bottom: 8px;
+.resume-paragraph {
+    margin-left: 30px;
+    padding-left: 10px;
+    /* Adjust as needed for spacing between bullet point and text */
+    border-left: 2px solid #333;
+    /* Adjust the color and thickness of the left border */
 }
 
-h3 {
-    font-size: 18px;
-    color: #f2ecec;
-    margin-bottom: 6px;
-}
-
-/* Style paragraphs */
-p {
-    font-size: 16px;
-    line-height: 1.5;
-    /* Adjust the line height for better readability */
-    color: #444;
-    margin-bottom: 15px;
+.resume-paragraph::first-line {
+    margin-left: 0;
+    padding-left: 0;
+    border-left: none;
 }
