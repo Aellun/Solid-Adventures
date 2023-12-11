@@ -1,4 +1,20 @@
 /* src/components/Sidebar.css */
+body,
+html {
+    height: 100%;
+    margin: 0;
+}
+
+.profile-image {
+    width: 100px;
+    /* Adjust the width as needed */
+    height: 100px;
+    /* Adjust the height as needed */
+    border-radius: 50%;
+    /* Make it a circular image */
+    margin-bottom: 10px;
+}
+
 .sidebar {
     width: 200px;
     background-color: #273037;
@@ -15,7 +31,15 @@
     margin-bottom: 20px;
 }
 
-.header-info h1,
+.header-info h2,
+h3 {
+    color: white;
+}
+
+.header-info h3 {
+    color: white;
+}
+
 .header-info p {
     margin: 0;
 }

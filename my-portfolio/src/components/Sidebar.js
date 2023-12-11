@@ -17,9 +17,15 @@ const Sidebar = ({ setActiveComponent }) => {
         <div className="sidebar">
             {/* Header Information at the Top */}
             <div className="header-info">
+                <img
+                    src="/allan.jpg"
+                    alt=''
+                    height="200"
+                    className="profile-image"
+                />
                 <h2>OKELLO KEVIN</h2>
                 <h3>Software Engineer Student</h3>
-                <h5>At Hoberton School/ALX_Africa</h5>
+                <h4>At Hoberton School/ALX_Africa</h4>
             </div>
 
             {/* Menu Items */}
